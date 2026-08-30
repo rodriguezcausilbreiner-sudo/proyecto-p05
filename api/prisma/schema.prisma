@@ -1,0 +1,26 @@
+// P5 · Mapa colaborativo de ruido
+// Nota: celda_lat y celda_lon son columnas GENERATED ALWAYS AS ... STORED
+// (ver prisma/migrations/init/migration.sql). Prisma no las gestiona en
+// las escrituras; el motor las calcula solas a partir de latitud/longitud.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model MuestraRuido {
+  id          BigInt   @id @default(autoincrement())
+  sesionId    String   @map("sesion_id") @db.Uuid
+  nivelDb     Float    @map("nivel_db")
+  latitud     Float
+  longitud    Float
+  precisionM  Float?   @map("precision_m")
+  medidoEn    DateTime @map("medido_en") @db.Timestamptz
+
+  @@index([medidoEn])
+  @@map("muestra_ruido")
+}
